@@ -11,14 +11,34 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
-    column = params[:sort_by] || session[:sort_by]
-    if column == 'title'
-      @movies = @movies.sort_by{|x| x[:title]}
+    
+    #@movies = Movie.all
+    #column = params[:sort_by] || session[:sort_by]
+    #if column == 'title'
+    #  @movies = @movies.sort_by{|x| x[:title]}
+    #end
+    #if column == 'release_date'
+    #  @movies = @movies.sort_by{|x| x[:release_date]}
+    #end
+    
+    @all_ratings = Movie.all_ratings
+    if params[:ratings]
+      @movies = Movie.where(:rating => params[:ratings].keys)
+    else
+      @movies = Movie.all
     end
-    if column == 'release_date'
-      @movies = @movies.sort_by{|x| x[:release_date]}
+    
+    case params[:sort_by]
+    when 'title'
+      @movies = @movies.sort_by do |movie|
+        movie[:title]
+      end
+    when 'release_date' 
+      @movies = @movies.sort_by do |movie|
+        movie[:release_date]
+      end
     end
+    
   end
 
   def new
