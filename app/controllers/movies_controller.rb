@@ -12,10 +12,11 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.all
-    sort = params[:sort_by] || session[:sort_by]
-    if sort == 'title'
+    column = params[:sort_by] || session[:sort_by]
+    if column == 'title'
       @movies = @movies.sort_by{|x| x[:title]}
-      elsif sort == 'release_date'
+    end
+    if column == 'release_date'
       @movies = @movies.sort_by{|x| x[:release_date]}
     end
   end
